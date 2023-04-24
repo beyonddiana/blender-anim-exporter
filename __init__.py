@@ -38,9 +38,7 @@ from bpy.types import Panel, Operator
 from bpy.props import StringProperty, BoolProperty, IntProperty, FloatProperty
 from bpy_extras.io_utils import ExportHelper
 
-# ---------------------------------------------------------------------------------------------------------
 # ---------------------------------------------- ACTION TO DICTIONARY -------------------------------------
-# ---------------------------------------------------------------------------------------------------------
 
 class DecoratedBone:
 
@@ -207,9 +205,7 @@ def convertActionToDictionary(priority, loop, loop_at_frame, ease_in_duration, e
 
     return action
 
-# ---------------------------------------------------------------------------------------------------------
 # ---------------------------------------------- DICTIONARY TO ANIM ---------------------------------------
-# ---------------------------------------------------------------------------------------------------------
 
 sAnimHeader = struct.Struct("<HHLf")
 sAnimParams = struct.Struct("<ffLffLL")
@@ -303,9 +299,7 @@ def convertDictionaryToAnim(data):
     
     return result
 
-# ---------------------------------------------------------------------------------------------------------
 # ---------------------------------------------- CLEANING -------------------------------------------------
-# ---------------------------------------------------------------------------------------------------------
 
 def removeDuplicatedFrames(data):
     def is_close_to_sibblings(previous_key, current_key, next_key, is_rotation):
@@ -346,9 +340,7 @@ def removeDuplicatedFrames(data):
     return data
 
 
-# ---------------------------------------------------------------------------------------------------------
 # ---------------------------------------------- EXPORTER WIDGET ------------------------------------------
-# ---------------------------------------------------------------------------------------------------------
 
 def writeAnimToFile(context, filepath, priority, loop, loop_at_frame, ease_in, ease_out, dump_json):
     check()
@@ -434,9 +426,7 @@ def menu_func_export(self, context):
     self.layout.operator(ExportAnimOperator.bl_idname, text="Second Life Animation (.anim)")
 
 
-# ---------------------------------------------------------------------------------------------------------
 # ---------------------------------------------- PROCESS --------------------------------------------------
-# ---------------------------------------------------------------------------------------------------------
 
 def check():
     context = bpy.context
