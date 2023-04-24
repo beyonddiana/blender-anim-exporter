@@ -58,7 +58,7 @@ Indeed, the orientation of an avatar in SL is facing X. But in Blender, the conv
 
 Make sure the avatar is facing you in front view, and check that its orientation is 0,0,0. If not, select the armature and tick Object > Apply > Rotation
 
-https://i.gyazo.com/caa192e79f0e157a1aae735f9dcaad9f.png
+![alt text](https://i.gyazo.com/caa192e79f0e157a1aae735f9dcaad9f.png)
 
 ### Keyframe your locations and/or rotations properly
 
