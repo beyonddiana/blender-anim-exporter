@@ -1,6 +1,6 @@
 bl_info = {
     "name": "Anim Exporter",
-    "blender": (3, 3, 0),
+    "blender": (3, 0, 0),
     "category": "Object"
 }
 
