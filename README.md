@@ -17,8 +17,9 @@ I've used a lot from the blender source code itself, especially the bvh exporter
 
 ## How to install?
 
-Google Drive foler: https://drive.google.com/drive/folders/1gXWxunKk8z1QulD1lHNPzbZ1Y9TMfUPq
-Download blender-anim-exporter.zip
+Go to the Releases page: https://github.com/aglaia-resident/blender-anim-exporter/releases
+In the latest release, download the file blender-sl-anim-exporter.zip
+This is the plugin!
 
 Then install it as any other plugin:
 - In Blender, go to Edit > Preferences > Add-ons
@@ -35,7 +36,7 @@ Your model can come from another software, as long as it respects the SL rig bon
 If you don't have any model yet, you need a rig for creating your animation. You can use the Avatar Workbench that is available for free:
 https://www.avalab.org/avatar-workbench/
 
-For starting, you can also use the simple rig and mesh that i provide in the same folder on google drive:
+For starting, you can also use the simple rig and mesh that i provide on google drive:
 https://drive.google.com/drive/folders/1gXWxunKk8z1QulD1lHNPzbZ1Y9TMfUPq
 Donwload avatar.blend and open it in Blender.
 
