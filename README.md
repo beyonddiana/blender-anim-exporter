@@ -67,7 +67,7 @@ Here are some options. If you don't see the options on the right, click the Cog 
 
 ## OPTIONS
 
-**- Start frame, End frame, FPS**: these settings cannot be changed here. Indeed, they come from your blender scene itself. If you can change Start frame and End frame in the timline:
+**- Start frame, End frame, FPS**: these settings cannot be changed here. Indeed, they come from your blender scene itself. You can change Start frame and End frame in the timline:
 
 ![alt text](https://i.gyazo.com/99bd95e2c123143835f59a551b2866a1.png)
 
