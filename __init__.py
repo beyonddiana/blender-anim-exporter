@@ -27,7 +27,7 @@ bl_info = {
     "blender": (3, 0, 0),
     "category": "Animation",
     "author": "Aglaia Resident",
-    "version": (1, 1, 0)
+    "version": (1, 0, 0)
 }
 
 import bpy
