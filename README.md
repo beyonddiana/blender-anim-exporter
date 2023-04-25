@@ -17,14 +17,14 @@ I've used a lot from the blender source code itself, especially the bvh exporter
 
 ## How to install?
 
-Go to the Releases page: https://github.com/aglaia-resident/blender-anim-exporter/releases
-In the latest release, download the file blender-sl-anim-exporter.zip
-This is the plugin!
+Go to the Releases page: https://github.com/aglaia-resident/blender-anim-exporter/releases  
+In the latest release, download the file blender-sl-anim-exporter.zip  
+This zip file is the plugin.
 
 Then install it as any other plugin:
 - In Blender, go to Edit > Preferences > Add-ons
 - Click Install
-- Select the blender-anim-exporter-1.0.0.zip file  that you just downloaded
+- Select the zip file  that you have downloaded
 - Then don't forget to tick the checkbox to enable it.
 
 Now if you go to File > Export, you should see a new option "Second Life Animation (.anim)"
