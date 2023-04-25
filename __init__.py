@@ -25,7 +25,9 @@ freely, subject to the following restrictions:
 bl_info = {
     "name": "Second Life Anim Exporter",
     "blender": (3, 0, 0),
-    "category": "Animation"
+    "category": "Animation",
+    "author": "Aglaia Resident",
+    "version": (1, 1, 0)
 }
 
 import bpy
