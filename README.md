@@ -67,6 +67,14 @@ Here are some options. If you don't see the options on the right, click the Cog 
 
 ## OPTIONS
 
+**- Start frame, End frame, FPS**: these settings cannot be changed here. Indeed, they come from your blender scene itself. If you can change Start frame and End frame in the timline:
+
+![alt text](https://i.gyazo.com/99bd95e2c123143835f59a551b2866a1.png)
+
+And you can change the FPS in the Output Properties panel:
+
+![alt text](https://i.gyazo.com/484305ccd49333ab27c94d9ffd02f150.png)
+
 - Priority: choose between 0 to 6
 - Loop: tick this box if your animation should run in loop
 - If loop: set which frame is the first frame of the loop
@@ -74,15 +82,6 @@ Here are some options. If you don't see the options on the right, click the Cog 
 - Ease out duration 
 - Dump as JSON : this is for debug purpose. If you want to analyze your animation, this file could help you. You can open it with any text editor, like notepad.
 
-Other settings that are not in the Export widget, but have to be set right in Blender:
-
-The first and last frame will be the ones that are defined in your timeline:
-
-![alt text](https://i.gyazo.com/99bd95e2c123143835f59a551b2866a1.png)
-
-The FPS is defined in Blender as well :
-
-![alt text](https://i.gyazo.com/484305ccd49333ab27c94d9ffd02f150.png)
 
 ## KNOWN ISSUES
 
