@@ -75,13 +75,17 @@ And you can change the FPS in the Output Properties panel:
 
 ![alt text](https://i.gyazo.com/484305ccd49333ab27c94d9ffd02f150.png)
 
-- Priority: choose between 0 to 6
-- Loop: tick this box if your animation should run in loop
-- If loop: set which frame is the first frame of the loop
-- Ease in duration
-- Ease out duration 
-- Dump as JSON : this is for debug purpose. If you want to analyze your animation, this file could help you. You can open it with any text editor, like notepad.
+**- Export Translations**: Most of the time, in SL, you want to animate bones by rotation + translation for mPelvis, and rotation only for all other bones. If you check this box, all existing translation channels will be exported. If you don't check it (which is the default), only mPelvis translation will be exported, and all other bones translations will be ignored. If you are unsure, do not check it.
 
+**- Priority**: choose between 0 and 6
+
+**- Loop**: tick this box if your animation should run in loop
+
+**- Looop starts at frame**: sets which frame is the first frame of the loop. This has no effect if you didn't check the "Loop?" checkbox.
+
+**- Ease in** and **Ease out **
+
+**- Dump as JSON** : this is for debug purpose. If you want to analyze your animation, this file could help you. You can open it with any text editor, like notepad.
 
 ## KNOWN ISSUES
 
