@@ -23,9 +23,9 @@ freely, subject to the following restrictions:
 """
 
 bl_info = {
-    "name": "Anim Exporter",
+    "name": "Second Life Anim Exporter",
     "blender": (3, 0, 0),
-    "category": "Object"
+    "category": "Animation"
 }
 
 import bpy
@@ -73,7 +73,7 @@ class DecoratedBone:
         else:
             return "[\"%s\" root bone]\n" % (self.name)
 
-def getChannels():
+def getChannels(with_translations):
 
     channels = {"rotation_channels": [], "location_channels": []}
 
@@ -86,7 +86,8 @@ def getChannels():
         if 'rotation_quaternion' == type and not bone_name in channels['rotation_channels']:
             channels['rotation_channels'].append(bone_name)
         if 'location' == type and not bone_name in channels['location_channels']:
-            channels['location_channels'].append(bone_name)
+            if 'mPelvis' == bone_name or with_translations:
+                channels['location_channels'].append(bone_name)
 
     return channels
 
@@ -105,7 +106,7 @@ def getBonesDecorated(obj, arm):
     return bones_decorated
 
 
-def getJoints(priority):
+def getJoints(priority, with_translations):
 
     context = bpy.context
     obj = context.active_object
@@ -120,7 +121,7 @@ def getJoints(priority):
     joints = {}
 
     bones_decorated = getBonesDecorated(obj, arm)
-    channels = getChannels()
+    channels = getChannels(with_translations)
 
     for frame in range(scene.frame_start, scene.frame_end + 1):
   
@@ -180,7 +181,7 @@ def getJoints(priority):
     
 
 
-def convertActionToDictionary(priority, loop, loop_at_frame, ease_in_duration, ease_out_duration):
+def convertActionToDictionary(priority, loop, loop_at_frame, ease_in_duration, ease_out_duration, with_translations):
     scene = bpy.context.scene
     duration = (scene.frame_end - scene.frame_start) / scene.render.fps
 
@@ -200,7 +201,7 @@ def convertActionToDictionary(priority, loop, loop_at_frame, ease_in_duration, e
         "ease_out_duration": ease_out_duration,
         "hand_pose": 0,
         "constraints": [],
-        "joints": getJoints(priority)
+        "joints": getJoints(priority, with_translations)
     }
 
     return action
@@ -342,14 +343,15 @@ def removeDuplicatedFrames(data):
 
 # ---------------------------------------------- EXPORTER WIDGET ------------------------------------------
 
-def writeAnimToFile(context, filepath, priority, loop, loop_at_frame, ease_in, ease_out, dump_json):
-    check()
+def writeAnimToFile(context, filepath, priority, loop, loop_at_frame, ease_in, ease_out, dump_json, with_translations):
+    
     dictionary = convertActionToDictionary(
         priority=priority,
         loop=loop,
         loop_at_frame=loop_at_frame,
         ease_in_duration=ease_in,
-        ease_out_duration=ease_out
+        ease_out_duration=ease_out,
+        with_translations=with_translations
     )
     dictionary = removeDuplicatedFrames(dictionary)
     anim = convertDictionaryToAnim(dictionary)
@@ -368,7 +370,7 @@ def writeAnimToFile(context, filepath, priority, loop, loop_at_frame, ease_in, e
 
 class ExportAnimOperator(Operator, ExportHelper):
     """Exports a .anim file for Second Life"""
-    bl_idname = "export.anim"
+    bl_idname = "sl_anim.export"
     bl_label = "Export a .anim file"
 
     # ExportHelper mixin class uses this
@@ -382,14 +384,22 @@ class ExportAnimOperator(Operator, ExportHelper):
 
     priority: IntProperty(
         name="Priority",
-        default=4
+        default=4,
+        min=0,
+        max=6
+    )
+    
+    with_translations: BoolProperty(
+        name="Export translations?",
+        default=False,
+        description="If not checked, only rotations will be exported. Note that this won't affect mPelvis: mPelvis translations will be exported anyway."
     )
 
     loop: BoolProperty(
         name="Loop?",
         default=False,
     )
-
+    
     loop_at_frame: IntProperty(
         name="Loop starts at frame",
         default=1
@@ -397,20 +407,70 @@ class ExportAnimOperator(Operator, ExportHelper):
 
     ease_in: FloatProperty(
         name="Ease in",
-        default=0.8
+        default=0
     )
 
     ease_out: FloatProperty(
         name="Ease out",
-        default=0.8
+        default=0
     )
 
     dump_json: BoolProperty(
-        name="Dump JSON?",
-        default=False
+        name="Dump as JSON?",
+        default=False,
+        description="This will produce an addition .json file that you can open in a text editor for debuging purpose."
     )
+        
+    def draw(self, context):
+        layout = self.layout
+        scene = bpy.context.scene
+        
+        row = layout.row()
+        row.label(text="SCENE DATA")
+        row = layout.row()
+        row.label(text=f"Start frame: {scene.frame_start}")
+        row = layout.row()
+        row.label(text=f"End frame: {scene.frame_end}")
+        row = layout.row()
+        row.label(text=f"FPS: {scene.render.fps}")
+        
+        row = layout.row()
+        row.label(text="EXPORT TRANSLATIONS?")
+        row = layout.row()
+        row.prop(self, "with_translations")
+        
+        row = layout.row()
+        row.label(text="PRIORITY")
+        row = layout.row()
+        row.prop(self, "priority")
+        
+        row = layout.row()
+        row.label(text="LOOP")
+        row = layout.row()
+        row.prop(self, "loop")
+        row = layout.row()
+        row.prop(self, "loop_at_frame")
+        
+        row = layout.row()
+        row.label(text="EASE IN/OUT")
+        row = layout.row()
+        row.prop(self, "ease_in")
+        row = layout.row()
+        row.prop(self, "ease_out")
+        
+        row = layout.row()
+        row.label(text="DEBUG")
+        row = layout.row()
+        row.prop(self, "dump_json")
+         
 
     def execute(self, context):
+        
+        error = getError()
+        if "" != error:
+            self.report({'ERROR'}, error)
+            return {'FINISHED'}
+        
         return writeAnimToFile(
             context, self.filepath,
             self.priority,
@@ -418,7 +478,8 @@ class ExportAnimOperator(Operator, ExportHelper):
             self.loop_at_frame,
             self.ease_in,
             self.ease_out,
-            self.dump_json
+            self.dump_json,
+            self.with_translations
         )
 
 
@@ -428,15 +489,18 @@ def menu_func_export(self, context):
 
 # ---------------------------------------------- PROCESS --------------------------------------------------
 
-def check():
+def getError():
     context = bpy.context
     obj = context.active_object
-    if not obj:
-        raise("You must select an armature")
-    if obj.type != 'ARMATURE':
-        raise("You must select an armature")
+    
+    if obj is None:
+        return "You must select an armature"
+    if not obj.type == 'ARMATURE':
+        return "You must select an armature"
     if not obj.animation_data.action:
-        raise("The armature has no action")
+        return "Your armature has no action."
+    
+    return ""
 
 
 def register():
@@ -449,3 +513,4 @@ def unregister():
 
 if __name__ == "__main__":
     register()
+    bpy.ops.sl_anim.export('INVOKE_DEFAULT')
