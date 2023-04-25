@@ -36,22 +36,14 @@ Your model can come from another software, as long as it respects the SL rig bon
 If you don't have any model yet, you need a rig for creating your animation. You can use the Avatar Workbench that is available for free:
 https://www.avalab.org/avatar-workbench/
 
-For starting, you can also use the simple rig and mesh that i provide on google drive:
-https://drive.google.com/drive/folders/1gXWxunKk8z1QulD1lHNPzbZ1Y9TMfUPq
-Donwload avatar.blend and open it in Blender.
+For starting, you can also use the simple rig and mesh that i provide on google drive:  
+https://drive.google.com/drive/folders/1gXWxunKk8z1QulD1lHNPzbZ1Y9TMfUPq  
+Donwload avatar.blend and open it in Blender. IT REQUIRES BLENDER 3.0 OR UPPER
 
 I've made this rig from the Avatar Workbench. I removed all bones except the body ones, so you get the torso, neck, head, arms and legs.
 If you want to animate bento bones and volume bones, then please use the avatar workbench.
 
-## IMPORTANT REQUIREMENTS
-
-Should work with Blender 3.0 and upper.
-
-1/ At least 2 frames in the animation
-
-Please make sure that your animation has at least 2 frames. Only 1 frame won't work. This is something that i will correct later. If you want to make a static pose, then duplicate the first frame into the second frame.
-
-2/ Orientation of the model
+## ORIENTATION OF THE MODEL
 
 In Blender, your model must face you when you are in front view. Type 1 on the numpad to go in front view: the model look at you.
 
@@ -61,15 +53,9 @@ Make sure the avatar is facing you in front view, and check that its orientation
 
 ![alt text](https://i.gyazo.com/caa192e79f0e157a1aae735f9dcaad9f.png)
 
-### Keyframe your locations and/or rotations properly
-
-The exporter will export all the location and rotation channels that are in your dopesheet. So it is your job to make the dopesheet clean. Most of the time, you will want rotation + location for mPelvis, and rotation only for all other bones.
-
-I've decided to not include a checkbox "rotation only" in the exporter, as some other plugins do, because i find this confusing: even when checked, that usually still exports mPelvis locations. Instead, i think it is better to have a clean dopesheet with only the channels that you want to export.
-
 ## How to use?
 
-Create your animation. Remember that it must be at least 2 frames. Only one frame will not work.
+Create your animation.
 
 If you have several actions in your blender file: select the one you want to export in the Dopesheet > Action Editor.
 
