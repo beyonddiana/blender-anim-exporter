@@ -1,6 +1,6 @@
 # Blender Plugin for exporting Second Life animations
 
-## Why a .anim exporter?
+## WHY A .ANIM EXPORTER?
 
 If you create your animations with Avastar or Bento Buddy, you do NOT need this plugin, because Avastar and Bento Buddy have already everything for exporting to .anim. But if:
 
@@ -15,7 +15,7 @@ Personally, i make my animations either in Cascadeur 3D, or in Rokoko Studio. It
 Credits:
 I've used a lot from the blender source code itself, especially the bvh exporter, that i've used as a base for collecting data about the animation. I've also reused from code from https://github.com/FelixWolf/SecondLifeTools/blob/master/animjson for writting the anim file and json file.
 
-## How to install?
+## HOW TO INSTALL?
 
 Go to the Releases page: https://github.com/aglaia-resident/blender-anim-exporter/releases  
 In the latest release, download the file blender-sl-anim-exporter.zip  
@@ -29,7 +29,7 @@ Then install it as any other plugin:
 
 Now if you go to File > Export, you should see a new option "Second Life Animation (.anim)"
 
-## What model to use?
+## WHAT MODEL TO USE?
 
 Your model can come from another software, as long as it respects the SL rig bones hierarchy.
 
@@ -53,7 +53,7 @@ Make sure the avatar is facing you in front view, and check that its orientation
 
 ![alt text](https://i.gyazo.com/caa192e79f0e157a1aae735f9dcaad9f.png)
 
-## How to use?
+## HOW TO USE?
 
 Create your animation.
 
@@ -65,7 +65,7 @@ Here are some options. If you don't see the options on the right, click the Cog 
 
 ![alt text](https://i.gyazo.com/7a3772498945f1e82e16fdec4ec8c562.png)
 
-Options :
+## OPTIONS
 
 - Priority: choose between 0 to 6
 - Loop: tick this box if your animation should run in loop
