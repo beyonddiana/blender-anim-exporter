@@ -27,7 +27,7 @@ bl_info = {
     "blender": (3, 0, 0),
     "category": "Animation",
     "author": "Aglaia Resident",
-    "version": (1, 0, 0)
+    "version": (1, 1, 0)
 }
 
 import bpy
@@ -199,23 +199,22 @@ class DecoratedBone:
             return "[\"%s\" root bone]\n" % (self.name)
 
 def getChannels(with_translations):
-
     channels = {"rotation_channels": [], "location_channels": []}
-
     obj = bpy.context.active_object
     action = obj.animation_data.action
     for fcurve in action.fcurves:
-        bone_name = fcurve.group.name
-        parts = fcurve.data_path.split('.')
-        type = parts[-1]
-        if not is_sl_bone(bone_name):
-            print(f"Non SL bone: {bone_name}")
+        if "pose.bones" != fcurve.data_path[0:10]:
             continue
-        if 'rotation_quaternion' == type and not bone_name in channels['rotation_channels']:
-            channels['rotation_channels'].append(bone_name)
-        if 'location' == type and not bone_name in channels['location_channels']:
-            if 'mPelvis' == bone_name or with_translations:
-                channels['location_channels'].append(bone_name)
+        parts = fcurve.data_path.rpartition('.')
+        pose_bone = obj.path_resolve(parts[0])
+        fcurve_type = parts[2]
+        if not is_sl_bone(pose_bone.name):
+            continue
+        if 'rotation_quaternion' == fcurve_type and not pose_bone.name in channels['rotation_channels']:
+            channels['rotation_channels'].append(pose_bone.name)
+        if 'location' == fcurve_type and not pose_bone.name in channels['location_channels']:
+            if 'mPelvis' == pose_bone.name or with_translations:
+                channels['location_channels'].append(pose_bone.name)
 
     return channels
 
