@@ -39,6 +39,129 @@ from mathutils import Matrix, Euler
 from bpy.types import Panel, Operator
 from bpy.props import StringProperty, BoolProperty, IntProperty, FloatProperty
 from bpy_extras.io_utils import ExportHelper
+import re
+
+# ---------------------------------------------- BONES --------------------------------------------
+
+BASE_BONES = [
+    "mPelvis",
+    "mTorso",
+    "mChest",
+    "mNeck",
+    "mHead",
+    "mSkull",
+    "mCollarLeft",
+    "mShoulderLeft",
+    "mElbowLeft",
+    "mWristLeft",
+    "mCollarRight",
+    "mShoulderRight",
+    "mElbowRight",
+    "mWristRight",
+    "mHipLeft",
+    "mKneeLeft",
+    "mAnkleLeft",
+    "mFootLeft",
+    "mToeLeft",
+    "mHipRight",
+    "mKneeRight",
+    "mAnkleRight",
+    "mFootRight",
+    "mToeRight",
+    "mGroin"
+]
+
+VOLUME_BONES = [
+    "LEFT_PEC",
+    "RIGHT_PEC",
+    "PELVIS",
+    "HEAD",
+    "NECK",
+    "R_CLAVICLE",
+    "L_CLAVICLE",
+    "CHEST",
+    "UPPER_BACK",
+    "BELLY",
+    "LEFT_HANDLE",
+    "RIGHT_HANDLE",
+    "R_UPPER_ARM",
+    "L_UPPER_ARM",
+    "LOWER_BACK",
+    "BUTT",
+    "R_LOWER_ARM",
+    "L_LOWER_ARM",
+    "L_HAND",
+    "R_HAND",
+    "R_UPPER_LEG",
+    "L_UPPER_LEG",
+    "R_LOWER_LEG",
+    "L_LOWER_LEG",
+    "R_FOOT",
+    "L_FOOT"
+]
+
+def is_sl_bone(bone):    
+    # Base and Volume bones
+    if bone in BASE_BONES or bone in VOLUME_BONES:
+        return True
+
+    # Fingers
+    if re.search("^mHand(Thumb|Index|Middle|Ring|Pinky)(1|2|3)(Right|Left)$", bone):
+        return True
+    
+    # Tail
+    if re.search("^mTail(1|2|3|4|5|6)$", bone):
+        return True
+    
+    # Spine
+    if re.search("^mSpine(1|2|3|4)$", bone):
+        return True
+    
+    # Wings
+    if "mWingsRoot" == bone or "mWing4FanRight" == bone or "mWing4FanLeft" == bone:
+        return True
+    if re.search("^mWing(1|2|3|4)(Right|Left)$", bone):
+        return True
+    
+    # Hinds Limbs
+    if "mHindLimbsRoot" == bone:
+        return True
+    if re.search("^mHindLimb(1|2|3|4)(Right|Left)$", bone):
+        return True
+    
+    # Face
+    if re.search("^mFaceForehead(Right|Left|Center)$", bone):
+        return True
+    if re.search("^mFaceEyebrow(Outer|Center|Inner)(Right|Left)$", bone):
+        return True
+    if re.search("^mFaceEyeLid(Upper|Lower)(Right|Left)$", bone):
+        return True
+    if re.search("^mFaceEyeAlt(Right|Left)$", bone):
+        return True
+    if re.search("^mFaceEyecornerInner(Right|Left)$", bone):
+        return True
+    if re.search("^mFaceEar(1|2)(Right|Left)$", bone):
+        return True
+    if re.search("^mFaceNose(Right|Left|Center|Base|Bridge)$", bone):
+        return True
+    if re.search("^mFaceCheek(Upper|Lower)(Right|Left)$", bone):
+        return True
+    if "mFaceJaw" == bone or "mFaceChin" == bone or "mFaceJawShaper" == bone or "mFaceRoot" == bone:
+        return True
+    if re.search("^mFaceLip(Upper|Corner)(Right|Left|Center)$", bone):
+        return True
+    if re.search("^mFaceTongue(Base|Tip)$", bone):
+        return True
+    if re.search("^mFaceLipLower(Right|Left|Center)$", bone):
+        return True
+    if re.search("^mFaceTeeth(Lower|Upper)$", bone):
+        return True
+    
+    # Eyes
+    if re.search("^mEye(Right|Left)$", bone):
+        return True
+        
+    return False
 
 # ---------------------------------------------- ACTION TO DICTIONARY -------------------------------------
 
@@ -85,6 +208,9 @@ def getChannels(with_translations):
         bone_name = fcurve.group.name
         parts = fcurve.data_path.split('.')
         type = parts[-1]
+        if not is_sl_bone(bone_name):
+            print(f"Non SL bone: {bone_name}")
+            continue
         if 'rotation_quaternion' == type and not bone_name in channels['rotation_channels']:
             channels['rotation_channels'].append(bone_name)
         if 'location' == type and not bone_name in channels['location_channels']:
