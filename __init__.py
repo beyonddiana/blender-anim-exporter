@@ -27,7 +27,7 @@ bl_info = {
     "blender": (3, 0, 0),
     "category": "Animation",
     "author": "Aglaia Resident",
-    "version": (1, 1, 0)
+    "version": (1, 2, 0)
 }
 
 import bpy
@@ -249,8 +249,15 @@ def getJoints(priority, with_translations):
 
     bones_decorated = getBonesDecorated(obj, arm)
     channels = getChannels(with_translations)
+    
+    frame_current = scene.frame_current
+    
+    wm = bpy.context.window_manager
+    wm.progress_begin(0, scene.frame_end - scene.frame_start)
 
     for frame in range(scene.frame_start, scene.frame_end + 1):
+        
+        wm.progress_update(frame - scene.frame_start)
   
         scene.frame_set(frame)
 
@@ -301,6 +308,9 @@ def getJoints(priority, with_translations):
 
             dbone.prev_euler = rot
 
+    scene.frame_set(frame_current)
+    wm.progress_end()
+
     obj.rotation_euler[2] = radians(-90)
     bpy.ops.object.transform_apply(rotation=True)
     
@@ -308,12 +318,15 @@ def getJoints(priority, with_translations):
     
 
 
-def convertActionToDictionary(priority, loop, loop_at_frame, ease_in_duration, ease_out_duration, with_translations):
+def convertActionToDictionary(priority, loop, loop_start, loop_end, ease_in_duration, ease_out_duration, with_translations):
     scene = bpy.context.scene
     duration = (scene.frame_end - scene.frame_start) / scene.render.fps
 
-    if loop_at_frame < scene.frame_start:
-        loop_at_frame = scene.frame_start
+    if loop_start < scene.frame_start:
+        loop_start = scene.frame_start
+        
+    if loop_end > scene.frame_end:
+        loop_end = scene.frame_end
 
     action = {
         "version": 1,
@@ -322,8 +335,8 @@ def convertActionToDictionary(priority, loop, loop_at_frame, ease_in_duration, e
         "duration": duration,
         "emote_name": "",
         "loop": int(loop),
-        "loop_in_point": (loop_at_frame - scene.frame_start) / scene.render.fps,
-        "loop_out_point": duration,
+        "loop_in_point": (loop_start - scene.frame_start) / scene.render.fps,
+        "loop_out_point": (loop_end - scene.frame_start) / scene.render.fps,
         "ease_in_duration": ease_in_duration,
         "ease_out_duration": ease_out_duration,
         "hand_pose": 0,
@@ -470,16 +483,9 @@ def removeDuplicatedFrames(data):
 
 # ---------------------------------------------- EXPORTER WIDGET ------------------------------------------
 
-def writeAnimToFile(context, filepath, priority, loop, loop_at_frame, ease_in, ease_out, dump_json, with_translations):
+def writeAnimToFile(context, filepath, priority, loop, loop_start, loop_end, ease_in, ease_out, dump_json, with_translations):
     
-    dictionary = convertActionToDictionary(
-        priority=priority,
-        loop=loop,
-        loop_at_frame=loop_at_frame,
-        ease_in_duration=ease_in,
-        ease_out_duration=ease_out,
-        with_translations=with_translations
-    )
+    dictionary = convertActionToDictionary(priority, loop, loop_start, loop_end, ease_in, ease_out, with_translations)
     dictionary = removeDuplicatedFrames(dictionary)
     anim = convertDictionaryToAnim(dictionary)
 
@@ -527,18 +533,23 @@ class ExportAnimOperator(Operator, ExportHelper):
         default=False,
     )
     
-    loop_at_frame: IntProperty(
-        name="Loop starts at frame",
-        default=1
+    loop_start: IntProperty(
+        name="From",
+        default=0
+    )
+    
+    loop_end: IntProperty(
+        name="To",
+        default=0
     )
 
     ease_in: FloatProperty(
-        name="Ease in",
+        name="In",
         default=0
     )
 
     ease_out: FloatProperty(
-        name="Ease out",
+        name="Out",
         default=0
     )
 
@@ -547,6 +558,11 @@ class ExportAnimOperator(Operator, ExportHelper):
         default=False,
         description="This will produce an addition .json file that you can open in a text editor for debuging purpose."
     )
+    
+    def invoke(self, context, event):
+        self.loop_start = bpy.context.scene.frame_start
+        self.loop_end = bpy.context.scene.frame_end
+        return ExportHelper.invoke(self, context, event)
         
     def draw(self, context):
         layout = self.layout
@@ -576,13 +592,13 @@ class ExportAnimOperator(Operator, ExportHelper):
         row = layout.row()
         row.prop(self, "loop")
         row = layout.row()
-        row.prop(self, "loop_at_frame")
+        row.prop(self, "loop_start")
+        row.prop(self, "loop_end")
         
         row = layout.row()
         row.label(text="EASE IN/OUT")
         row = layout.row()
         row.prop(self, "ease_in")
-        row = layout.row()
         row.prop(self, "ease_out")
         
         row = layout.row()
@@ -602,7 +618,8 @@ class ExportAnimOperator(Operator, ExportHelper):
             context, self.filepath,
             self.priority,
             self.loop,
-            self.loop_at_frame,
+            self.loop_start,
+            self.loop_end,
             self.ease_in,
             self.ease_out,
             self.dump_json,
