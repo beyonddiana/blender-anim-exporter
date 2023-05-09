@@ -40,8 +40,8 @@ For starting, you can also use the simple rig and mesh that i provide on google 
 https://drive.google.com/drive/folders/1gXWxunKk8z1QulD1lHNPzbZ1Y9TMfUPq  
 Donwload avatar.blend and open it in Blender. IT REQUIRES BLENDER 3.0 OR UPPER
 
-I've made this rig from the Avatar Workbench. I removed all bones except the body ones, so you get the torso, neck, head, arms and legs.
-If you want to animate bento bones and volume bones, then please use the avatar workbench.
+I've made this rig from the Avatar Workbench. I've kept only the body and finger bones, so you get the torso, neck, head, arms, legs and fingers.
+If you want to animate other bento bones (face, wings, tail, etc) and volume bones, then please use the avatar workbench.
 
 ## ORIENTATION OF THE MODEL
 
