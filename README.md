@@ -81,9 +81,9 @@ And you can change the FPS in the Output Properties panel:
 
 **- Loop**: tick this box if your animation should run in loop
 
-**-From** and **To**: these are the start and End frames of the loop (if you have ticked the "Loop" checkbox)
+**- From** and **To**: these are the start and End frames of the loop (if you have ticked the "Loop" checkbox)
 
-**- **Ease in** and **Ease out**
+**- Ease in** and **Ease out**
 
 **- Dump as JSON** : this is for debug purpose. If you want to analyze your animation, this file could help you. You can open it with any text editor, like notepad.
 
