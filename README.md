@@ -85,7 +85,7 @@ And you can change the FPS in the Output Properties panel:
 
 **- Ease in** and **Ease out**
 
-**- Dump as JSON** : this is for debug purpose. If you want to analyze your animation, this file could help you. You can open it with any text editor, like notepad.
+**- Dump as JSON** : this is for debug purpose. By checking this option, the exporter will create a second file with the .json extension. If you want to analyze your animation, this file could help you. You can open it with any text editor, like notepad.
 
 ## KNOWN ISSUES
 
