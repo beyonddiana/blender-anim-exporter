@@ -501,9 +501,9 @@ def writeAnimToFile(context, filepath, priority, loop, loop_start, loop_end, eas
     return {'FINISHED'}
 
 
-class ExportAnimOperator(Operator, ExportHelper):
+class SL_ANIM_EXPORTER_OT_export_operator(Operator, ExportHelper):
     """Exports a .anim file for Second Life"""
-    bl_idname = "sl_anim.export"
+    bl_idname = "sl_anim_exporter.export_operator"
     bl_label = "Export a .anim file"
 
     # ExportHelper mixin class uses this
@@ -628,7 +628,7 @@ class ExportAnimOperator(Operator, ExportHelper):
 
 
 def menu_func_export(self, context):
-    self.layout.operator(ExportAnimOperator.bl_idname, text="Second Life Animation (.anim)")
+    self.layout.operator(SL_ANIM_EXPORTER_OT_export_operator.bl_idname, text="Second Life Animation (.anim)")
 
 
 # ---------------------------------------------- PROCESS --------------------------------------------------
@@ -648,13 +648,13 @@ def getError():
 
 
 def register():
-    bpy.utils.register_class(ExportAnimOperator)
+    bpy.utils.register_class(SL_ANIM_EXPORTER_OT_export_operator)
     bpy.types.TOPBAR_MT_file_export.append(menu_func_export)
 
 def unregister():
-    bpy.utils.unregister_class(ExportAnimOperator)
+    bpy.utils.unregister_class(SL_ANIM_EXPORTER_OT_export_operator)
     bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)
 
 if __name__ == "__main__":
     register()
-    bpy.ops.sl_anim.export('INVOKE_DEFAULT')
+    bpy.ops.sl_anim_exporter.export_operator('INVOKE_DEFAULT')
