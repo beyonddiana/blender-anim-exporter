@@ -63,7 +63,7 @@ Then select the armature and go to File > Export > Second Life Animation
 
 Here are some options. If you don't see the options on the right, click the Cog icon:
 
-![alt text](https://i.gyazo.com/7a3772498945f1e82e16fdec4ec8c562.png)
+![alt text](https://i.gyazo.com/f1b4584f96d7e7f9a231361af906fbb7.png)
 
 ## OPTIONS
 
